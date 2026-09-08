@@ -9,7 +9,8 @@ export default function BookPage() {
   const [slot, setSlot] = useState(null)
   const [loadError, setLoadError] = useState(null)
 
-  const [eventType, setEventType] = useState('Wedding')
+  const [eventTypes, setEventTypes] = useState([])
+  const [eventTypeId, setEventTypeId] = useState('')
   const [hostName, setHostName] = useState('')
   const [guestCount, setGuestCount] = useState(100)
   const [notes, setNotes] = useState('')
@@ -22,6 +23,13 @@ export default function BookPage() {
     api.get(`/api/hall-slots/${slotId}`)
       .then(setSlot)
       .catch((err) => setLoadError(err.message))
+
+    api.get('/api/event-types')
+      .then((types) => {
+        setEventTypes(types)
+        if (types.length) setEventTypeId(String(types[0].id))
+      })
+      .catch(() => {})
   }, [slotId])
 
   async function submit(e) {
@@ -32,7 +40,7 @@ export default function BookPage() {
     try {
       const booking = await api.post('/api/bookings', {
         hallSlotId: Number(slotId),
-        eventType,
+        eventTypeId: Number(eventTypeId),
         hostName,
         guestCount: Number(guestCount),
         notes: notes || null,
@@ -72,12 +80,10 @@ export default function BookPage() {
       ) : (
         <form onSubmit={submit}>
           <label>סוג אירוע
-            <select value={eventType} onChange={(e) => setEventType(e.target.value)}>
-              <option>Wedding</option>
-              <option>BarMitzvah</option>
-              <option>Engagement</option>
-              <option>ShevaBrachos</option>
-              <option>CommunityEvent</option>
+            <select value={eventTypeId} onChange={(e) => setEventTypeId(e.target.value)} required>
+              {eventTypes.map((t) => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
             </select>
           </label>
           <label>שם בעל/ת השמחה

@@ -47,7 +47,7 @@ export default function SlotsPage() {
                 <td>₪{s.basePrice.toLocaleString()}</td>
                 <td><span className={`badge ${s.status}`}>{s.status}</span></td>
                 <td>
-                  {s.status === 'Available' && user?.role === 'Client' && (
+                  {s.status === 'Available' && user?.role === 'Customer' && (
                     <Link className="btn-sm" to={`/book/${s.id}`}>הזמנה</Link>
                   )}
                   {s.status === 'Available' && !user && (

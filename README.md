@@ -39,10 +39,11 @@ VITE_API_URL=http://localhost:5269
 
 | Role | Email | Password |
 |---|---|---|
-| Client | `client@eventbooking.local` | `Passw0rd!` |
+| Customer | `client@eventbooking.local` | `Passw0rd!` |
+| Admin | `admin@eventbooking.local` | `Passw0rd!` |
 | Manager | `manager@eventbooking.local` | `Passw0rd!` |
 
-Only a **Client** sees the "הזמנה" button (the server rejects a Manager booking with 403).
+Only a **Customer** sees the "הזמנה" button (the server rejects a Manager booking with 403).
 
 ## How to see the 409 path
 
