@@ -1,32 +1,37 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import { useAuth } from './auth.jsx'
-import Nav from './components/Nav.jsx'
+import AppLayout from './components/AppLayout.jsx'
+import LandingPage from './pages/LandingPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import SlotsPage from './pages/SlotsPage.jsx'
 import BookPage from './pages/BookPage.jsx'
 import MyBookingsPage from './pages/MyBookingsPage.jsx'
+import ManagerPage from './pages/ManagerPage.jsx'
 
-function RequireAuth({ children }) {
+function RequireAuth({ children, role }) {
   const { user } = useAuth()
-  return user ? children : <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/login" replace />
+  if (role && user.role !== role) return <Navigate to="/" replace />
+  return children
 }
 
 export default function App() {
+  const location = useLocation()
+
   return (
-    <>
-      <Nav />
-      <main className="container">
-        <Routes>
-          {/* 1. login / register */}
+    <AppLayout>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
-          {/* 2. list with real server pagination */}
-          <Route path="/" element={<SlotsPage />} />
-          {/* 3. action on the limited resource + 4. clear 409 handling */}
-          <Route path="/book/:slotId" element={<RequireAuth><BookPage /></RequireAuth>} />
-          <Route path="/my-bookings" element={<RequireAuth><MyBookingsPage /></RequireAuth>} />
+          <Route path="/slots" element={<SlotsPage />} />
+          <Route path="/book/:slotId" element={<RequireAuth role="Customer"><BookPage /></RequireAuth>} />
+          <Route path="/my-bookings" element={<RequireAuth role="Customer"><MyBookingsPage /></RequireAuth>} />
+          <Route path="/manage" element={<RequireAuth role="Manager"><ManagerPage /></RequireAuth>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </main>
-    </>
+      </AnimatePresence>
+    </AppLayout>
   )
 }

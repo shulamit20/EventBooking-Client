@@ -1,90 +1,45 @@
 :root {
-  --bg: #f4f5f7;
-  --card: #ffffff;
-  --ink: #1f2430;
-  --muted: #6b7280;
-  --line: #e3e6ea;
-  --accent: #2f6feb;
-  --danger: #d64545;
-  --ok: #2f9e44;
+  color-scheme: light;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: var(--bg);
-  color: var(--ink);
+  background:
+    radial-gradient(1100px 500px at 90% -10%, rgba(230, 73, 128, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 0%, rgba(112, 72, 232, 0.10), transparent 55%),
+    #faf7ff;
+  min-height: 100vh;
 }
 
-.container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
-
-/* nav */
-.nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 20px; background: var(--card); border-bottom: 1px solid var(--line);
+/* let framer-motion pages sit nicely */
+main {
+  position: relative;
 }
-.nav-brand { font-weight: 700; font-size: 18px; color: var(--accent); text-decoration: none; }
-.nav-links { display: flex; align-items: center; gap: 14px; }
-.nav-links a { color: var(--ink); text-decoration: none; }
-.nav-links a:hover { color: var(--accent); }
-.nav-user { color: var(--muted); font-size: 14px; }
 
-h1 { font-size: 22px; margin: 0 0 16px; }
-h2 { font-size: 18px; margin: 0 0 8px; }
-
-/* card */
-.card {
-  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
-  padding: 16px; margin-bottom: 12px;
+a {
+  color: inherit;
 }
-.form-card { max-width: 420px; margin: 32px auto; }
-.card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.cards { display: grid; gap: 12px; }
 
-/* forms */
-form { display: grid; gap: 12px; }
-label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
-input, select, textarea {
-  padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px;
-  font: inherit; background: #fff; color: var(--ink);
+/* subtle animated confetti dots behind the hero */
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
-button {
-  padding: 9px 14px; border: 0; border-radius: 6px; background: var(--accent);
-  color: #fff; font: inherit; cursor: pointer;
+.hero-glow span {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: float 9s ease-in-out infinite;
 }
-button:disabled { opacity: 0.5; cursor: default; }
-.btn { display: inline-block; padding: 9px 14px; background: var(--accent); color: #fff; border-radius: 6px; text-decoration: none; }
-.btn-sm { padding: 5px 10px; background: var(--accent); color: #fff; border-radius: 5px; text-decoration: none; font-size: 13px; }
-.btn-danger { background: var(--danger); }
-
-.tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-.tabs button { background: #eef0f3; color: var(--ink); }
-.tabs button.active { background: var(--accent); color: #fff; }
-
-/* table */
-.table-wrap { overflow-x: auto; }
-.table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
-.table th, .table td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--line); font-size: 14px; }
-.table th { background: #eef0f3; }
-
-.badge { padding: 2px 8px; border-radius: 999px; font-size: 12px; background: #eef0f3; }
-.badge.Available { background: #e5f5ea; color: var(--ok); }
-.badge.Booked { background: #fde8e8; color: var(--danger); }
-.badge.Pending { background: #fff3d6; color: #9a6b00; }
-.badge.Confirmed { background: #e5f5ea; color: var(--ok); }
-.badge.Cancelled { background: #eef0f3; color: var(--muted); }
-
-.pager { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 16px; }
-.pager span { color: var(--muted); font-size: 14px; }
-
-.error { color: var(--danger); font-size: 14px; }
-.success { color: var(--ok); font-size: 14px; }
-.hint { color: var(--muted); font-size: 13px; margin-top: 16px; line-height: 1.7; }
-.slot-summary { color: var(--muted); line-height: 1.6; }
-
-.conflict-box {
-  border: 1px solid #f2c0c0; background: #fdeeee; border-radius: 8px; padding: 16px; text-align: center;
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-26px) scale(1.25); }
 }
-.conflict-box h2 { color: var(--danger); }

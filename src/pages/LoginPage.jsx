@@ -1,12 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import {
+  Card, SegmentedControl, TextInput, PasswordInput, Button, Stack, Title, Text, Alert, Box, Code,
+} from '@mantine/core'
+import { motion } from 'framer-motion'
+import { IconAlertTriangle, IconSparkles } from '@tabler/icons-react'
+import { notifications } from '@mantine/notifications'
+import { PageTransition } from '../components/Motion.jsx'
 import { useAuth } from '../auth.jsx'
+import { theme } from '../theme.js'
 
 export default function LoginPage() {
   const { login, register } = useAuth()
   const navigate = useNavigate()
 
-  const [mode, setMode] = useState('login') // 'login' | 'register'
+  const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [displayName, setDisplayName] = useState('')
@@ -20,7 +28,8 @@ export default function LoginPage() {
     try {
       if (mode === 'login') await login(email, password)
       else await register(email, password, displayName)
-      navigate('/')
+      notifications.show({ color: 'teal', message: 'ברוך הבא! 🎉', autoClose: 2000 })
+      navigate('/slots')
     } catch (err) {
       setError(err.message)
     } finally {
@@ -29,37 +38,83 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="card form-card">
-      <div className="tabs">
-        <button className={mode === 'login' ? 'active' : ''} onClick={() => setMode('login')}>כניסה</button>
-        <button className={mode === 'register' ? 'active' : ''} onClick={() => setMode('register')}>הרשמה</button>
-      </div>
+    <PageTransition>
+      <Box maw={440} mx="auto">
+        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
+          <Card>
+            <Stack align="center" gap={4} mb="md">
+              <Box
+                style={{
+                  width: 56, height: 56, borderRadius: 18, display: 'grid', placeItems: 'center',
+                  background: theme.other.heroGradient, color: 'white',
+                }}
+              >
+                <IconSparkles size={28} />
+              </Box>
+              <Title order={3}>{mode === 'login' ? 'כניסה לחשבון' : 'יצירת חשבון'}</Title>
+            </Stack>
 
-      <form onSubmit={submit}>
-        {mode === 'register' && (
-          <label>שם לתצוגה
-            <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} required maxLength={200} />
-          </label>
-        )}
-        <label>אימייל
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </label>
-        <label>סיסמה
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
-        </label>
+            <SegmentedControl
+              fullWidth
+              value={mode}
+              onChange={setMode}
+              color="grape"
+              data={[{ label: 'כניסה', value: 'login' }, { label: 'הרשמה', value: 'register' }]}
+              mb="md"
+            />
 
-        {error && <p className="error">{error}</p>}
+            <form onSubmit={submit}>
+              <Stack gap="sm">
+                {mode === 'register' && (
+                  <TextInput
+                    label="שם לתצוגה"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.currentTarget.value)}
+                    required
+                    maxLength={200}
+                  />
+                )}
+                <TextInput
+                  label="אימייל"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                  required
+                />
+                <PasswordInput
+                  label="סיסמה"
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                  required
+                  minLength={6}
+                />
 
-        <button type="submit" disabled={busy}>
-          {busy ? '...' : mode === 'login' ? 'כניסה' : 'הרשמה'}
-        </button>
-      </form>
+                {error && (
+                  <Alert color="red" icon={<IconAlertTriangle size={16} />} variant="light">
+                    {error}
+                  </Alert>
+                )}
 
-      <p className="hint">
-        משתמשי דמו:<br />
-        <code>client@eventbooking.local</code> · <code>manager@eventbooking.local</code><br />
-        סיסמה: <code>Passw0rd!</code>
-      </p>
-    </div>
+                <Button
+                  type="submit"
+                  loading={busy}
+                  variant="gradient"
+                  gradient={{ from: 'grape', to: 'pink', deg: 135 }}
+                  fullWidth
+                  mt={4}
+                >
+                  {mode === 'login' ? 'כניסה' : 'הרשמה'}
+                </Button>
+              </Stack>
+            </form>
+
+            <Text fz="xs" c="dimmed" ta="center" mt="md" lh={1.7}>
+              משתמשי דמו — סיסמה <Code>Passw0rd!</Code><br />
+              <Code>client@eventbooking.local</Code> · <Code>manager@eventbooking.local</Code>
+            </Text>
+          </Card>
+        </motion.div>
+      </Box>
+    </PageTransition>
   )
 }

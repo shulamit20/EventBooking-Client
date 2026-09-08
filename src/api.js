@@ -1,4 +1,4 @@
-// One place for every call to the server. Screens never call fetch directly.
+// One place for every call to the EventBooking server. Screens never call fetch directly.
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5269'
 
@@ -27,16 +27,70 @@ async function request(method, path, body) {
   const data = text ? JSON.parse(text) : null
 
   if (!res.ok) {
-    // ASP.NET ProblemDetails carries the message in `detail`, falling back to `title`.
     const message = data?.detail || data?.title || `הבקשה נכשלה (${res.status})`
     throw new ApiError(res.status, message, data)
   }
   return data
 }
 
+const http = {
+  get: (p) => request('GET', p),
+  post: (p, b) => request('POST', p, b),
+  patch: (p, b) => request('PATCH', p, b),
+  del: (p) => request('DELETE', p),
+}
+
+// ---- typed helpers, grouped by feature ----
+
 export const api = {
-  get: (path) => request('GET', path),
-  post: (path, body) => request('POST', path, body),
-  patch: (path, body) => request('PATCH', path, body),
-  del: (path) => request('DELETE', path),
+  auth: {
+    login: (email, password) => http.post('/api/auth/login', { email, password }),
+    register: (email, password, displayName) =>
+      http.post('/api/auth/register', { email, password, displayName }),
+  },
+
+  lookups: {
+    eventTypes: () => http.get('/api/event-types'),
+    serviceCategories: () => http.get('/api/service-categories'),
+  },
+
+  venues: {
+    list: (page = 1, pageSize = 12) => http.get(`/api/venues?page=${page}&pageSize=${pageSize}`),
+  },
+
+  slots: {
+    list: (params) => {
+      const q = new URLSearchParams()
+      Object.entries(params ?? {}).forEach(([k, v]) => {
+        if (v !== undefined && v !== null && v !== '') q.set(k, v)
+      })
+      return http.get(`/api/hall-slots?${q.toString()}`)
+    },
+    get: (id) => http.get(`/api/hall-slots/${id}`),
+  },
+
+  extraServices: {
+    list: () => http.get('/api/extra-services'),
+  },
+
+  cateringMenus: {
+    list: () => http.get('/api/catering-menus'),
+  },
+
+  pricing: {
+    // { hallSlotId, guestCount, cateringMenuId?, extraServices:[{extraServiceId,quantity}] }
+    estimate: (selection) => http.post('/api/pricing/estimate', selection),
+  },
+
+  bookings: {
+    // { hallSlotId, eventTypeId, cateringMenuId?, hostName, guestCount, notes?, extraServices:[] }
+    create: (booking) => http.post('/api/bookings', booking),
+    mine: (page = 1, pageSize = 20) => http.get(`/api/bookings/mine?page=${page}&pageSize=${pageSize}`),
+    get: (id) => http.get(`/api/bookings/${id}`),
+    cancel: (id) => http.del(`/api/bookings/${id}`),
+    // manager
+    all: (page = 1, pageSize = 20, status) =>
+      http.get(`/api/bookings?page=${page}&pageSize=${pageSize}${status ? `&status=${status}` : ''}`),
+    setStatus: (id, status) => http.patch(`/api/bookings/${id}/status`, { status }),
+  },
 }

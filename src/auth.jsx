@@ -8,8 +8,12 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const raw = localStorage.getItem('user')
-    return raw ? JSON.parse(raw) : null
+    try {
+      const raw = localStorage.getItem('user')
+      return raw ? JSON.parse(raw) : null
+    } catch {
+      return null
+    }
   })
 
   function persist(auth) {
@@ -19,11 +23,11 @@ export function AuthProvider({ children }) {
   }
 
   async function login(email, password) {
-    persist(await api.post('/api/auth/login', { email, password }))
+    persist(await api.auth.login(email, password))
   }
 
   async function register(email, password, displayName) {
-    persist(await api.post('/api/auth/register', { email, password, displayName }))
+    persist(await api.auth.register(email, password, displayName))
   }
 
   function logout() {
@@ -32,11 +36,17 @@ export function AuthProvider({ children }) {
     setUser(null)
   }
 
-  return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  const value = {
+    user,
+    login,
+    register,
+    logout,
+    isCustomer: user?.role === 'Customer',
+    isManager: user?.role === 'Manager',
+    isAdmin: user?.role === 'Admin',
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)
