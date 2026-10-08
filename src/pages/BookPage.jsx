@@ -131,7 +131,7 @@ export default function BookPage() {
               </ThemeIcon>
               <Title order={3} c="red.7">התאריך נתפס</Title>
               <Text mt="xs" c="dimmed">
-                מישהו אחר הזמין את האולם הזה ממש עכשיו (השרת החזיר 409). נסו אולם או תאריך אחר.
+                מישהו אחר הזמין את האולם הזה ממש עכשיו. נסו אולם או תאריך אחר.
               </Text>
               <Button component={Link} to="/slots" mt="lg" color="grape" radius="xl">
                 חזרה לרשימת האולמות

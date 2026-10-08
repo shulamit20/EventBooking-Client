@@ -65,7 +65,7 @@ export default function PriceSummary({ breakdown, loading }) {
           </Group>
 
           <Box mt={2}>
-            <Text fz={10} c="dimmed">כל הסכומים מחושבים בשרת מהמחירים במסד הנתונים.</Text>
+            <Text fz={10} c="dimmed">כל הסכומים מחושבים אוטומטית ומעודכנים בזמן אמת.</Text>
           </Box>
         </Stack>
       )}

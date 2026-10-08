@@ -31,7 +31,7 @@ export default function AppLayout({ children }) {
               >
                 <IconSparkles size={22} />
               </ActionIcon>
-              <Text fw={800} fz="lg" c="grape.7">EventBooking</Text>
+              <Text fw={800} fz="lg" c="grape.7">NextLevel Events</Text>
             </Group>
 
             <Group gap={6} wrap="nowrap">
@@ -107,7 +107,7 @@ export default function AppLayout({ children }) {
         <Container size="lg" pb="xl">
           <Group justify="center" gap={6} c="dimmed" fz="xs" mt={40}>
             <IconCalendarHeart size={14} />
-            <Text fz="xs">EventBooking · פרויקט גמר · השרת הוא מה שנבדק</Text>
+            <Text fz="xs">NextLevel Events · פלטפורמת תכנון אירועים © 2026</Text>
           </Group>
         </Container>
       </AppShell.Main>

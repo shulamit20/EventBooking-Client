@@ -22,7 +22,7 @@ const steps = [
   { icon: IconMapPin, title: 'בוחרים אולם', text: 'תאריך, משמרת ומספר אורחים' },
   { icon: IconToolsKitchen2, title: 'מוסיפים קייטרינג', text: 'תפריט בשרי / חלבי / טבעוני — מחיר לאורח' },
   { icon: IconMusic, title: 'בוחרים שירותים', text: 'תקליטן, פרחים, צילום ועוד' },
-  { icon: IconConfetti, title: 'מזמינים', text: 'המחיר מחושב בשרת, אישור מיידי' },
+  { icon: IconConfetti, title: 'מזמינים', text: 'המחיר מחושב אוטומטית, אישור מיידי' },
 ]
 
 export default function LandingPage() {

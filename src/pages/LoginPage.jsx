@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Card, SegmentedControl, TextInput, PasswordInput, Button, Stack, Title, Text, Alert, Box, Code,
+  Card, SegmentedControl, TextInput, PasswordInput, Button, Stack, Title, Text, Alert, Box,
 } from '@mantine/core'
 import { motion } from 'framer-motion'
 import { IconAlertTriangle, IconSparkles } from '@tabler/icons-react'
@@ -107,11 +107,6 @@ export default function LoginPage() {
                 </Button>
               </Stack>
             </form>
-
-            <Text fz="xs" c="dimmed" ta="center" mt="md" lh={1.7}>
-              משתמשי דמו — סיסמה <Code>Passw0rd!</Code><br />
-              <Code>client@eventbooking.local</Code> · <Code>manager@eventbooking.local</Code>
-            </Text>
           </Card>
         </motion.div>
       </Box>
