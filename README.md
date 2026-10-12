@@ -1,7 +1,7 @@
 # EventBooking — Client (React)
 
 The React client for the [EventBooking server](../project-dotnet). Adapted to the **v2 server**
-(roles Customer / Manager / Admin, event types, catering menus, server-side price calculation).
+(roles Customer / Manager, event types, catering menus, server-side price calculation).
 
 ## Stack
 
