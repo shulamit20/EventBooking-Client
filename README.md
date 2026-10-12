@@ -48,7 +48,6 @@ Set `VITE_API_URL` in a `.env` file if your server runs elsewhere.
 |---|---|---|
 | Customer | `client@eventbooking.local` | `Passw0rd!` |
 | Manager | `manager@eventbooking.local` | `Passw0rd!` |
-| Admin | `admin@eventbooking.local` | `Passw0rd!` |
 
 Only a **Customer** sees "הזמנה" on a slot and can book. A **Manager** gets the ניהול area.
 
